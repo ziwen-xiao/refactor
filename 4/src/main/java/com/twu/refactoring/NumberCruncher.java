@@ -10,7 +10,9 @@ public class NumberCruncher {
     public int countEven() {
         int count = 0;
         for (int number : numbers) {
-            if (number % 2 == 0) count++;
+            if (number % 2 == 0) {
+                count++;
+            }
         }
         return count;
     }
@@ -18,7 +20,9 @@ public class NumberCruncher {
     public int countOdd() {
         int count = 0;
         for (int number : numbers) {
-            if (number % 2 == 1) count++;
+            if (number % 2 == 1) {
+                count++;
+            }
         }
         return count;
     }
@@ -26,7 +30,9 @@ public class NumberCruncher {
     public int countPositive() {
         int count = 0;
         for (int number : numbers) {
-            if (number >= 0) count++;
+            if (number >= 0) {
+                count++;
+            }
         }
         return count;
     }
@@ -34,7 +40,9 @@ public class NumberCruncher {
     public int countNegative() {
         int count = 0;
         for (int number : numbers) {
-            if (number < 0) count++;
+            if (number < 0) {
+                count++;
+            }
         }
         return count;
     }
