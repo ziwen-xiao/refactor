@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URL;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -23,7 +22,7 @@ public class CustomerTest {
 	private Movie ran = new Movie("Ran", Movie.REGULAR);
 	private Movie la = new Movie("LA Confidential", Movie.NEW_RELEASE);
 	private Movie trek = new Movie("Star Trek 13.2", Movie.NEW_RELEASE);
-	private Movie wallace = new Movie("Wallace and Gromit", Movie.CHILDRENS);
+	private Movie wallace = new Movie("Wallace and Gromit", Movie.CHILDREN);
 
     @BeforeEach
     public void setUpData(){
@@ -37,18 +36,18 @@ public class CustomerTest {
     @Test
     public void shouldOutputEmptyStatement() throws Exception {
         Customer customer = new Customer("Golden Shark");
-        verifyOutput(customer.statement(), "outputEmpty");
+        verifyOutput(customer.getRentalAccount(), "outputEmpty");
     }
 
     @Test
     public void shouldOutputCustomerStatement() throws Exception {
-        verifyOutput(dinsdale.statement(), "output1");
+        verifyOutput(dinsdale.getRentalAccount(), "output1");
     }
 
     @Test
     public void shouldOutputChangedStatement() throws Exception {
         la.setPriceCode(Movie.REGULAR);
-        verifyOutput(dinsdale.statement(), "outputChange");
+        verifyOutput(dinsdale.getRentalAccount(), "outputChange");
     }
 
     /*

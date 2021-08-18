@@ -5,66 +5,70 @@ import java.util.Iterator;
 
 public class Customer {
 
-	private String name;
-	private ArrayList<Rental> rentalList = new ArrayList<Rental>();
+	private final String name;
+	private final ArrayList<Rental> rentalList = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Rental arg) {
-		rentalList.add(arg);
+	public void addRental(Rental rental) {
+		rentalList.add(rental);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
+	public String getRentalAccount() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		Iterator<Rental> rentals = rentalList.iterator();
-		String result = "Rental Record for " + getName() + "\n";
-		while (rentals.hasNext()) {
-			double thisAmount = 0;
-			Rental each = rentals.next();
+		String customerAccountHeader = "Rental Record for " + getName() + "\n";
+		StringBuilder customerAccount = new StringBuilder();
 
-			// determine amounts for each line
-			switch (each.getMovie().getPriceCode()) {
+		while (rentals.hasNext()) {
+			double pointAmount = 0;
+			Rental eachRental = rentals.next();
+			int daysRented = eachRental.getDaysRented();
+			int movieCode = eachRental.getMovie().getPriceCode();
+			String movieTitle = eachRental.getMovie().getTitle();
+			double regularMoviePointBonus = (daysRented - 2) * 1.5;
+			double newReleaseMoviePointBonus = daysRented * 3;
+			double childrenMoviePointBonus = (daysRented - 3) * 1.5;
+
+			switch (movieCode) {
 			case Movie.REGULAR:
-				thisAmount += 2;
-				if (each.getDaysRented() > 2)
-					thisAmount += (each.getDaysRented() - 2) * 1.5;
+				pointAmount += 2;
+				if (daysRented > 2)
+					pointAmount += regularMoviePointBonus;
 				break;
 			case Movie.NEW_RELEASE:
-				thisAmount += each.getDaysRented() * 3;
+				pointAmount += newReleaseMoviePointBonus;
 				break;
-			case Movie.CHILDRENS:
-				thisAmount += 1.5;
-				if (each.getDaysRented() > 3)
-					thisAmount += (each.getDaysRented() - 3) * 1.5;
+			case Movie.CHILDREN:
+				pointAmount += 1.5;
+				if (daysRented > 3)
+					pointAmount += childrenMoviePointBonus;
 				break;
-
 			}
 
-			// add frequent renter points
 			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE)
-					&& each.getDaysRented() > 1)
-				frequentRenterPoints++;
 
-			// show figures for this rental
-			result += "\t" + each.getMovie().getTitle() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
-			totalAmount += thisAmount;
+			if ((movieCode == Movie.NEW_RELEASE) && daysRented > 1) {
+				frequentRenterPoints++;
+			}
+
+			String customerAccountBody = "\t" + movieTitle + "\t" + pointAmount + "\n";
+			customerAccount.append(customerAccountHeader).append(customerAccountBody);
+			totalAmount += pointAmount;
 
 		}
-		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
-		return result;
+
+		String customerAccountFooter = "Amount owed is "+ totalAmount + "\n" + "You earned " + frequentRenterPoints + " frequent renter points";
+		return customerAccount
+				.append(customerAccountFooter)
+				.toString();
 	}
 
 }
