@@ -28,11 +28,8 @@ public class DateParser {
 
     public Date parse() {
         int year, month, date, hour, minute;
-
         year = getYear();
-
         month = getMonth();
-
         date = getDate();
 
         if (dateAndTimeString.charAt(11) == 'Z') {
